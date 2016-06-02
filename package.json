@@ -1,0 +1,62 @@
+{
+	"name" : "template-function-express-engine",
+
+	"version" : "0.1.0",
+
+	"description" : "A simple Express engine for function templates.",
+
+	"author" :
+	{
+		"name" : "Luke Phillips",
+		"email" : "lsphillips.mail@gmail.com"
+	},
+
+	"keywords" :
+	[
+		"express",
+		"template",
+		"engine",
+		"function",
+		"view engine"
+	],
+
+	"homepage" : "https://github.com/lsphillips/TemplateFunctionExpressEngine",
+
+	"bugs" :
+	{
+		"url" : "https://github.com/lsphillips/TemplateFunctionExpressEngine/issues"
+	},
+
+	"devDependencies" :
+	{
+		"chai" : "3.4.1",
+		"mocha" : "2.3.4",
+		"eslint" : "1.10.3",
+		"colors" : "1.1.2"
+	},
+
+	"dependencies" :
+	{
+		"glob" : "7.0.3"
+	},
+
+	"scripts" :
+	{
+		"test" : "node scripts/test.js"
+	},
+
+	"main" : "src/templateFunctionExpressEngine.js",
+
+	"repository" :
+	{
+		"type" : "git",
+		"url"  : "https://github.com/lsphillips/TemplateFunctionExpressEngine.git"
+	},
+
+	"license" : "MIT",
+
+	"engines" :
+	{
+		"node" : ">=4.0.0"
+	}
+}
