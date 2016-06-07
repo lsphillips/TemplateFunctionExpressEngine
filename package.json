@@ -1,7 +1,7 @@
 {
 	"name" : "template-function-express-engine",
 
-	"version" : "0.1.0",
+	"version" : "0.1.1",
 
 	"description" : "A simple Express engine for function templates.",
 
