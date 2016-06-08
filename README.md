@@ -1,5 +1,7 @@
 # Template Function Express Engine
 
+![Travis Build Status](https://travis-ci.org/lsphillips/TemplateFunctionExpressEngine.svg?branch=master)
+
 A simple Express engine for function templates.
 
 ## What is a function template?
