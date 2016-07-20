@@ -14,7 +14,9 @@ function clearRequireCacheInDirectory (directory)
 		path.join(directory, '**/*')
 	).forEach(function (file)
 	{
-		delete require.cache[file];
+		delete require.cache[
+			path.normalize(file)
+		];
 	});
 }
 
@@ -62,7 +64,7 @@ module.exports = function (pathToTemplateFile, options, callback)
 
 		return;
 	}
-	
+
 	// 2) Render
 	// -------------------------------------------------------
 

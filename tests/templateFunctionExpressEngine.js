@@ -132,7 +132,9 @@ describe('templateFunctionExpressEngine(pathToTemplateFile, options, callback)',
 			chai.expect(
 				getAllTemplateFixtureFiles().some(function (templateFixtureFile)
 				{
-					return require.cache[templateFixtureFile] !== undefined;
+					return require.cache[
+						path.normalize(templateFixtureFile)
+					] !== undefined;
 				})
 			).to.be.true;
 
@@ -155,7 +157,9 @@ describe('templateFunctionExpressEngine(pathToTemplateFile, options, callback)',
 			chai.expect(
 				getAllTemplateFixtureFiles().every(function (templateFixtureFile)
 				{
-					return require.cache[templateFixtureFile] === undefined;
+					return require.cache[
+						path.normalize(templateFixtureFile)
+					] === undefined;
 				})
 			).to.be.true;
 
