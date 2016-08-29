@@ -84,7 +84,7 @@ The default renderer provided by the engine is `templateFunctionExpressEngine.re
 ``` js
 templateFunctionExpressEngine.create(
 {
-	renderer : function renderer (template, model)
+	renderer (template, model)
 	{
 		// ...
 	}
@@ -104,8 +104,8 @@ templateFunctionExpressEngine.create(
 				React.createElement(template, model)
 			);
 		}
-
-		return templateFunctionExpressEngine.render(template, model);
+		
+		return templateFunctionExpressEngine.render(template, model, renderer);
 	}
 });
 ```
