@@ -33,7 +33,7 @@ function render (template, model, renderer = render)
 
 	let result;
 
-	try // to render template with data.
+	try // to render template with model.
 	{
 		result = template(model, renderer);
 	}
@@ -90,7 +90,7 @@ function create (options = {})
 
 		let result;
 
-		try // to render template with data.
+		try // to render template with model.
 		{
 			result = this.render(template, model, rendererToUseForPartials);
 		}
