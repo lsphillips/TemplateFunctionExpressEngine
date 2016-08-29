@@ -22,66 +22,91 @@ function clearRequireCacheInDirectory (directory)
 
 // --------------------------------------------------------
 
-module.exports = function (pathToTemplateFile, options, callback)
+function render (template, model, renderer = render)
 {
-	function done (error, result)
-	{
-		// If caching is disabled, we need to clear the `require`
-		// cache for all the files in the Express view folder.
-		if (options.cache === false)
-		{
-			clearRequireCacheInDirectory(options.settings.views);
-		}
-
-		callback(error, result);
-	}
-
-	// 1) Require
-	// -------------------------------------------------------
-
-	let template;
-
-	try // to require template file.
-	{
-		template = require(pathToTemplateFile);
-	}
-	catch (requireTemplateError)
-	{
-		done(
-			new Error(`An error occurred whilst fetching the function template at ${pathToTemplateFile}. ${requireTemplateError}`)
-		);
-
-		return;
-	}
-
 	// Ensure the template is a function, otherwise throw a
 	// complaint.
 	if (typeof template !== 'function')
 	{
-		done(
-			new TypeError(`The function template found at ${pathToTemplateFile} is not valid. It must be a function.`)
-		);
-
-		return;
+		throw new TypeError(`The provided function template is not valid. It must be a function.`);
 	}
-
-	// 2) Render
-	// -------------------------------------------------------
 
 	let result;
 
 	try // to render template with data.
 	{
-		result = template(options);
+		result = template(model, renderer);
 	}
 	catch (renderTemplateError)
 	{
-		done(
-			new Error(`An error occurred whilst rendering the function template found at ${pathToTemplateFile}. ${renderTemplateError}`)
-		);
-
-		return;
+		throw new Error(`An error occurred whilst rendering the template function with name ${template.name}. ${renderTemplateError}`);
 	}
 
-	done(null, result);
-};
+	return result;
+}
+
+// --------------------------------------------------------
+
+function create (options = {})
+{
+	let rendererToUseForPartials = options.renderer;
+
+	if (rendererToUseForPartials !== undefined && typeof rendererToUseForPartials !== 'function')
+	{
+		throw new Error('Partial renderer must be a function.');
+	}
+
+	return (pathToTemplateFile, model, callback) =>
+	{
+		function done (error, result)
+		{
+			// If caching is disabled, we need to clear the
+			// `require` cache for all the files in the Express
+			// view folder.
+			if (model.settings['view cache'] === false)
+			{
+				clearRequireCacheInDirectory(
+					model.settings['views']
+				);
+			}
+
+			callback(error, result);
+		}
+
+		let template;
+
+		try // to require template file.
+		{
+			template = require(pathToTemplateFile);
+		}
+		catch (requireTemplateError)
+		{
+			done(
+				new Error(`An error occurred whilst fetching the function template at "${pathToTemplateFile}". ${requireTemplateError}`)
+			);
+
+			return;
+		}
+
+		let result;
+
+		try // to render template with data.
+		{
+			result = this.render(template, model, rendererToUseForPartials);
+		}
+		catch (renderTemplateError)
+		{
+			done(
+				new Error(`An error occurred whilst rendering the function template found at ${pathToTemplateFile}. ${renderTemplateError}`)
+			);
+
+			return;
+		}
+
+		done(null, result);
+	};
+}
+
+// --------------------------------------------------------
+
+module.exports = { create, render };

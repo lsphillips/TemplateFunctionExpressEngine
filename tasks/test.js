@@ -6,7 +6,7 @@
 // --------------------------------------------------------
 
 const eslint = require('eslint');
-const mocha  = require('mocha');
+const Mocha  = require('mocha');
 const colors = require('colors');
 
 // --------------------------------------------------------
@@ -29,7 +29,7 @@ Promise.resolve()
 
 		let report = engine.executeOnFiles(
 		[
-			'scripts/test.js', 'src/templateFunctionExpressEngine.js', 'tests/templateFunctionExpressEngine.js'
+			'tasks/test.js', 'src/templateFunctionExpressEngine.js', 'tests/templateFunctionExpressEngine.test.js'
 		]);
 
 		console.log(
@@ -53,23 +53,28 @@ Promise.resolve()
 
 		return new Promise(function (success, failure)
 		{
-			new mocha(
+			let suiteOfTests = new Mocha(
 			{
-				ui : 'bdd', reporter : 'list'
-			})
-				.addFile('tests/templateFunctionExpressEngine.js').run(function (errors)
+				ui : 'bdd', reporter : 'spec'
+			});
+
+			// Add.
+			suiteOfTests.addFile('tests/templateFunctionExpressEngine.test.js');
+
+			// Run.
+			suiteOfTests.run(function (mochaTestErrors)
+			{
+				if (mochaTestErrors)
 				{
-					if (errors)
-					{
-						failure(
-							new Error('Some tests have failed and are requiring your immediate attention.')
-						);
+					failure(
+						new Error('Some tests have failed and are requiring your immediate attention.')
+					);
 
-						return;
-					}
+					return;
+				}
 
-					success();
-				});
+				success();
+			});
 		});
 	})
 

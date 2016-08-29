@@ -23,7 +23,6 @@
 		"block-scoped-var"           : 2,
 		"curly"                      : 2,
 		"default-case"               : 2,
-		"dot-notation"               : 2,
 		"eqeqeq"                     : 2,
 		"guard-for-in"               : 2,
 		"no-alert"                   : 2,

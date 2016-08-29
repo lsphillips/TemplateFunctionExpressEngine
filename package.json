@@ -1,7 +1,7 @@
 {
 	"name" : "template-function-express-engine",
 
-	"version" : "0.1.4",
+	"version" : "0.2.1",
 
 	"description" : "A simple Express engine for function templates.",
 
@@ -30,19 +30,21 @@
 	"devDependencies" :
 	{
 		"chai" : "3.5.0",
-		"mocha" : "2.5.3",
-		"eslint" : "3.1.1",
-		"colors" : "1.1.2"
+		"mocha" : "3.0.2",
+		"sinon" : "1.17.5",
+		"eslint" : "3.3.1",
+		"colors" : "1.1.2",
+		"deep-assign" : "2.0.0"
 	},
 
 	"dependencies" :
 	{
-		"glob" : "7.0.3"
+		"glob" : "7.0.5"
 	},
 
 	"scripts" :
 	{
-		"test" : "node scripts/test.js"
+		"test" : "node tasks/test.js"
 	},
 
 	"main" : "src/templateFunctionExpressEngine.js",
@@ -57,6 +59,6 @@
 
 	"engines" :
 	{
-		"node" : ">=4.0.0"
+		"node" : ">=6.0.0"
 	}
 }

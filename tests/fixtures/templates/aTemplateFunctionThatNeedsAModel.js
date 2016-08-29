@@ -2,7 +2,7 @@
 
 // --------------------------------------------------------
 
-module.exports = function ()
+module.exports = function ({ name })
 {
-	throw new Error('The template has broken.');
+  return `Hello ${name}`;
 };

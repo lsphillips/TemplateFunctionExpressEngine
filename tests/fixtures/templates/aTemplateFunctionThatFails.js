@@ -2,7 +2,7 @@
 
 // --------------------------------------------------------
 
-module.exports = function (data)
+module.exports = function ()
 {
-	return `Hello ${data.name}`;
+  throw new Error('An unexpected error occurred.');
 };
