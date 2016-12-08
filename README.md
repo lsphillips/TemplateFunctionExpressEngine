@@ -22,7 +22,7 @@ Furthermore they remove the performance overhead introduced by compiling and add
 
 ## Usage
 
-You can hook up this engine into Express using `express#engine()`:
+You can hook up this engine into Express using `express#engine()`.
 
 ``` js
 const path                          = require('path');
@@ -42,7 +42,7 @@ express()
 	.set('view engine', 'js');
 ```
 
-Your template functions must be synchronous and accept at least one argument which will be an object map containing the template variables:
+Your template functions must be synchronous and accept at least one argument which will be an object map containing the template variables. For example:
 
 ``` js
 module.exports = function (model)
@@ -53,7 +53,7 @@ module.exports = function (model)
 
 ### Partials
 
-You may be tempted to call your partial template functions directly (as mentioned above):
+You may be tempted to call your partial template functions directly (as mentioned above), like so:
 
 ``` js
 const address = require('./partials/adress');
