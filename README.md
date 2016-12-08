@@ -18,11 +18,11 @@ function sayHelloAndIntroduceMyself (name)
 
 Template functions are effective because they are just ordinary functions written in JavaScript; partials and layouts are achieved simply by calling another function that you can bring in using `require()` (which comes with the benefit of a free cache).
 
-Furthermore they remove the performance overhead introduced by compiling. They remove additional complexity introduced by learning a new syntax and bespoke pattern(s) to extend said syntax.
+Furthermore they remove the performance overhead introduced by compiling and additional complexity introduced by learning a new syntax.
 
 ## Usage
 
-You can hook up this engine into Express using `express#engine()`. For example:
+You can hook up this engine into Express using `express#engine()`:
 
 ``` js
 const path                          = require('path');
@@ -53,7 +53,7 @@ module.exports = function (model)
 
 ### Partials
 
-You may be tempted to call your partial template functions directly (as mentioned above). For example:
+You may be tempted to call your partial template functions directly (as mentioned above):
 
 ``` js
 const address = require('./partials/adress');
@@ -66,7 +66,7 @@ module.exports = function (model)
 
 This does the job, but it hurts the testability of the template function; you can't completely unit test it without knowing what the `address` partial returns.
 
-It is recommended to use the renderer provided to each template function instead. For example:
+It is recommended to use the renderer provided to each template function instead:
 
 ``` js
 const address = require('./partial/address');
@@ -79,7 +79,7 @@ module.exports = function (model, render)
 
 It is a subtle change, but you can now test the template function by executing it with a renderer of your own, allowing you to assert that the `address` partial was rendered without knowing what is returned.
 
-The default renderer provided by the engine is `templateFunctionExpressEngine.renderTemplateFunction()` (the same method that renders your template functions). You can provide your own partial template renderer at engine creation. For example:
+The default renderer provided by the engine is `templateFunctionExpressEngine.renderTemplateFunction()` (the same method that renders your template functions). You can provide your own partial template renderer at engine creation:
 
 ``` js
 templateFunctionExpressEngine.createEngine(
@@ -91,7 +91,7 @@ templateFunctionExpressEngine.createEngine(
 });
 ```
 
-This is useful if you want to render specific partials using a different rendering technology, i.e. `React`. For example:
+This is useful if you want to render specific partials using a different rendering technology, i.e. `React`.
 
 ``` js
 templateFunctionExpressEngine.createEngine(
