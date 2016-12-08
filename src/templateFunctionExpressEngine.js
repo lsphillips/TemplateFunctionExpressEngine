@@ -22,7 +22,7 @@ function clearRequireCacheInDirectory (directory)
 
 // --------------------------------------------------------
 
-function render (template, model, renderer = render)
+function renderTemplateFunction (template, model, rendererForPartials = renderTemplateFunction)
 {
 	// Ensure the template is a function, otherwise throw a
 	// complaint.
@@ -35,7 +35,7 @@ function render (template, model, renderer = render)
 
 	try // to render template with model.
 	{
-		result = template(model, renderer);
+		result = template(model, rendererForPartials);
 	}
 	catch (renderTemplateError)
 	{
@@ -47,11 +47,11 @@ function render (template, model, renderer = render)
 
 // --------------------------------------------------------
 
-function create (options = {})
+function createEngine (options = {})
 {
-	let rendererToUseForPartials = options.renderer;
+	let rendererForPartials = options.rendererForPartials;
 
-	if (rendererToUseForPartials !== undefined && typeof rendererToUseForPartials !== 'function')
+	if (rendererForPartials !== undefined && typeof rendererForPartials !== 'function')
 	{
 		throw new Error('Partial renderer must be a function.');
 	}
@@ -63,7 +63,7 @@ function create (options = {})
 			// If caching is disabled, we need to clear the
 			// `require` cache for all the files in the Express
 			// view folder.
-			if (model.settings['view cache'] === false)
+			if (!model.settings['view cache'])
 			{
 				clearRequireCacheInDirectory(
 					model.settings['views']
@@ -92,7 +92,7 @@ function create (options = {})
 
 		try // to render template with model.
 		{
-			result = this.render(template, model, rendererToUseForPartials);
+			result = this.renderTemplateFunction(template, model, rendererForPartials);
 		}
 		catch (renderTemplateError)
 		{
@@ -109,4 +109,4 @@ function create (options = {})
 
 // --------------------------------------------------------
 
-module.exports = { create, render };
+module.exports = { createEngine, renderTemplateFunction };

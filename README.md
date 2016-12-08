@@ -32,7 +32,7 @@ const templateFunctionExpressEngine = require('template-function-express-engine'
 express()
 
 	.engine(
-		'js', templateFunctionExpressEngine.create()
+		'js', templateFunctionExpressEngine.createEngine()
 	)
 
 	.set(
@@ -79,12 +79,12 @@ module.exports = function (model, render)
 
 It is a subtle change, but you can now test the template function by executing it with a renderer of your own, allowing you to assert that the `address` partial was rendered without knowing what is returned.
 
-The default renderer provided by the engine is `templateFunctionExpressEngine.render()` (the same method that renders your template functions). You can provide your own partial template renderer at engine creation. For example:
+The default renderer provided by the engine is `templateFunctionExpressEngine.renderTemplateFunction()` (the same method that renders your template functions). You can provide your own partial template renderer at engine creation. For example:
 
 ``` js
-templateFunctionExpressEngine.create(
+templateFunctionExpressEngine.createEngine(
 {
-	renderer (template, model)
+	rendererForPartials (template, model)
 	{
 		// ...
 	}
@@ -94,9 +94,9 @@ templateFunctionExpressEngine.create(
 This is useful if you want to render specific partials using a different rendering technology, i.e. `React`. For example:
 
 ``` js
-templateFunctionExpressEngine.create(
+templateFunctionExpressEngine.createEngine(
 {
-	renderer : function renderer (template, model)
+	rendererForPartials : function rendererForPartials (template, model)
 	{
 		if (template.prototype instanceof React.Component)
 		{
@@ -104,8 +104,8 @@ templateFunctionExpressEngine.create(
 				React.createElement(template, model)
 			);
 		}
-		
-		return templateFunctionExpressEngine.render(template, model, renderer);
+
+		return templateFunctionExpressEngine.renderTemplateFunction(template, model, rendererForPartials);
 	}
 });
 ```

@@ -35,14 +35,16 @@ describe('templateFunctionExpressEngine', function ()
 
 	// -------------------------------------------------------
 
-	describe('.render(template, model, renderer)', function ()
+	describe('.renderTemplateFunction(template, model, rendererForPartials)', function ()
 	{
 		it('shall throw an error when the `template` is not a function', function ()
 		{
 			// Act & Assert.
-			chai.expect(
-				templateFunctionExpressEngine.render.bind(null, null)
-			).to.throw(TypeError);
+			chai.expect(function ()
+			{
+				templateFunctionExpressEngine.renderTemplateFunction(null)
+
+			}).to.throw(TypeError);
 		});
 
 		// ------------------------------------------------------
@@ -58,7 +60,7 @@ describe('templateFunctionExpressEngine', function ()
 				});
 
 				// Act.
-				let result = templateFunctionExpressEngine.render(aTemplateFunction);
+				let result = templateFunctionExpressEngine.renderTemplateFunction(aTemplateFunction);
 
 				// Assert.
 				chai.expect(
@@ -83,7 +85,7 @@ describe('templateFunctionExpressEngine', function ()
 				});
 
 				// Act.
-				let result = templateFunctionExpressEngine.render(aTemplateFunctionThatNeedsAModel, model);
+				let result = templateFunctionExpressEngine.renderTemplateFunction(aTemplateFunctionThatNeedsAModel, model);
 
 				// Assert.
 				chai.expect(
@@ -116,7 +118,7 @@ describe('templateFunctionExpressEngine', function ()
 				};
 
 				// Act.
-				let result = templateFunctionExpressEngine.render(aTemplateFunctionThatCallsAPartial, null, reversePartialTemplateRenderer);
+				let result = templateFunctionExpressEngine.renderTemplateFunction(aTemplateFunctionThatCallsAPartial, null, reversePartialTemplateRenderer);
 
 				// Assert.
 				chai.expect(
@@ -129,7 +131,7 @@ describe('templateFunctionExpressEngine', function ()
 
 			// -----------------------------------------------------
 
-			it('using `templateFunctionExpressEngine.render()` by default to render partial templates when `renderer` is not provided', function ()
+			it('using `templateFunctionExpressEngine.renderTemplateFunction()` by default to render partial templates when `rendererForPartials` is not provided', function ()
 			{
 				// Setup.
 				let aTemplateFunctionThatCallsAPartial = sinon.spy(function (model, render)
@@ -143,11 +145,11 @@ describe('templateFunctionExpressEngine', function ()
 				});
 
 				// Act.
-				let result = templateFunctionExpressEngine.render(aTemplateFunctionThatCallsAPartial);
+				let result = templateFunctionExpressEngine.renderTemplateFunction(aTemplateFunctionThatCallsAPartial);
 
 				// Assert.
 				chai.expect(
-					aTemplateFunctionThatCallsAPartial.calledWith(sinon.match.any, templateFunctionExpressEngine.render)
+					aTemplateFunctionThatCallsAPartial.calledWith(sinon.match.any, templateFunctionExpressEngine.renderTemplateFunction)
 				).to.be.true;
 
 				// Assert.
@@ -165,16 +167,18 @@ describe('templateFunctionExpressEngine', function ()
 				};
 
 				// Act & Assert.
-				chai.expect(
-					templateFunctionExpressEngine.render.bind(null, aTemplateFunctionThatFails)
-				).to.throw(Error);
+				chai.expect(function ()
+				{
+					templateFunctionExpressEngine.renderTemplateFunction(aTemplateFunctionThatFails);
+
+				}).to.throw(Error);
 			});
 		});
 	});
 
 	// -------------------------------------------------------
 
-	describe('.create(options)', function ()
+	describe('.createEngine(options)', function ()
 	{
 		const aDefaultExpressModel =
 		{
@@ -191,7 +195,7 @@ describe('templateFunctionExpressEngine', function ()
 				let pathToTemplateFile = getFullPathToTemplateFixture('aTemplateFunctionThatDoesNotExist.js');
 
 				// Act.
-				templateFunctionExpressEngine.create()(pathToTemplateFile, aDefaultExpressModel, function (error)
+				templateFunctionExpressEngine.createEngine()(pathToTemplateFile, aDefaultExpressModel, function (error)
 				{
 					// Assert.
 					chai.expect(error).to.be.instanceOf(Error);
@@ -208,10 +212,10 @@ describe('templateFunctionExpressEngine', function ()
 				let pathToTemplateFile = getFullPathToTemplateFixture('aTemplateFunctionThatIsNotAFunction.js');
 
 				// Act.
-				templateFunctionExpressEngine.create()(pathToTemplateFile, aDefaultExpressModel, function (error)
+				templateFunctionExpressEngine.createEngine()(pathToTemplateFile, aDefaultExpressModel, function (error)
 				{
 					// Assert.
-					chai.expect(error).to.be.instanceOf(Error);
+					chai.expect(error).to.be.instanceof(Error);
 
 					done();
 				});
@@ -227,7 +231,7 @@ describe('templateFunctionExpressEngine', function ()
 					let pathToTemplateFile = getFullPathToTemplateFixture('aTemplateFunction.js');
 
 					// Act.
-					templateFunctionExpressEngine.create()(pathToTemplateFile, aDefaultExpressModel, function (error, result)
+					templateFunctionExpressEngine.createEngine()(pathToTemplateFile, aDefaultExpressModel, function (error, result)
 					{
 						// Assert.
 						chai.expect(error).to.be.null;
@@ -253,7 +257,7 @@ describe('templateFunctionExpressEngine', function ()
 					});
 
 					// Act.
-					templateFunctionExpressEngine.create()(pathToTemplateFile, model, function (error, result)
+					templateFunctionExpressEngine.createEngine()(pathToTemplateFile, model, function (error, result)
 					{
 						// Assert.
 						chai.expect(result).to.equal('Hello World');
@@ -264,19 +268,19 @@ describe('templateFunctionExpressEngine', function ()
 
 				// ----------------------------------------------------
 
-				it('using `options.renderer` to render partials', function (done)
+				it('using `options.rendererForPartials` to render partials', function (done)
 				{
 					// Setup.
 					let pathToTemplateFile = getFullPathToTemplateFixture('aTemplateFunctionThatCallsAPartial.js');
 
 					// Setup.
-					let renderer = sinon.spy(function (template, model)
+					let rendererForPartials = function (template, model)
 					{
 						return template(model).split('').reverse().join('');
-					});
+					};
 
 					// Act.
-					templateFunctionExpressEngine.create({ renderer })(pathToTemplateFile, aDefaultExpressModel, function (error, result)
+					templateFunctionExpressEngine.createEngine({ rendererForPartials })(pathToTemplateFile, aDefaultExpressModel, function (error, result)
 					{
 						// Assert.
 						chai.expect(result).to.be.equal('Hello dlroW');
@@ -287,13 +291,13 @@ describe('templateFunctionExpressEngine', function ()
 
 				// ----------------------------------------------------
 
-				it('using `templateFunctionExpressEngine.render()` to render partials when `options.renderer` is not provided', function (done)
+				it('using `templateFunctionExpressEngine.renderTemplateError()` to render partials when `options.rendererForPartials` is not provided', function (done)
 				{
 					// Setup.
 					let pathToTemplateFile = getFullPathToTemplateFixture('aTemplateFunctionThatCallsAPartial.js');
 
 					// Act.
-					templateFunctionExpressEngine.create()(pathToTemplateFile, aDefaultExpressModel, function (error, result)
+					templateFunctionExpressEngine.createEngine()(pathToTemplateFile, aDefaultExpressModel, function (error, result)
 					{
 						// Assert.
 						chai.expect(result).to.be.equal('Hello World');
@@ -304,16 +308,16 @@ describe('templateFunctionExpressEngine', function ()
 
 				// ----------------------------------------------------
 
-				it('shall execute `callback` with an error when rendering of said template function fails for some reason', function (done)
+				it('executing `callback` with an error when rendering of said template function fails for some reason', function (done)
 				{
 					// Setup.
 					let pathToTemplateFile = getFullPathToTemplateFixture('aTemplateFunctionThatFails.js');
 
 					// Act.
-					templateFunctionExpressEngine.create()(pathToTemplateFile, aDefaultExpressModel, function (error)
+					templateFunctionExpressEngine.createEngine()(pathToTemplateFile, aDefaultExpressModel, function (error)
 					{
 						// Assert.
-						chai.expect(error).to.be.instanceOf(Error);
+						chai.expect(error).to.be.instanceof(Error);
 
 						done();
 					});
@@ -324,19 +328,23 @@ describe('templateFunctionExpressEngine', function ()
 
 			it('that shall not clear the `require` cache for the view directory found at `model.settings["views"]` when `model.settings["view cache"]` is `true`', function (done)
 			{
+				// Setup.
 				let pathToTemplateFile = getFullPathToTemplateFixture('aTemplateFunctionThatCallsAPartial.js');
 
-				// Act & Assert.
-				templateFunctionExpressEngine.create()(pathToTemplateFile, aDefaultExpressModel, function ()
+				// Act.
+				templateFunctionExpressEngine.createEngine()(pathToTemplateFile, aDefaultExpressModel, function ()
 				{
-					chai.expect(
-						getAllTemplateFixtureFiles().some(function (templateFixtureFile)
+					let hasNotRemovedAllTemplateFixtureFilesFromCache = getAllTemplateFixtureFiles()
+
+						.some(function (templateFixtureFile)
 						{
 							return require.cache[
 								path.normalize(templateFixtureFile)
 							] !== undefined;
-						})
-					).to.be.true;
+						});
+
+					// Assert.
+					chai.expect(hasNotRemovedAllTemplateFixtureFilesFromCache).to.be.true;
 
 					done();
 				});
@@ -347,6 +355,9 @@ describe('templateFunctionExpressEngine', function ()
 			it('that shall clear the `require` cache for the view directory found at `model.settings["views"]` when `model.settings["view cache"]` is `false`', function (done)
 			{
 				// Setup.
+				let pathToTemplateFile = getFullPathToTemplateFixture('aTemplateFunctionThatCallsAPartial.js');
+
+				// Setup.
 				let model = assign({}, aDefaultExpressModel,
 				{
 					settings :
@@ -355,20 +366,20 @@ describe('templateFunctionExpressEngine', function ()
 					}
 				});
 
-				// Setup.
-				let pathToTemplateFile = getFullPathToTemplateFixture('aTemplateFunctionThatCallsAPartial.js');
-
-				// Act & Assert.
-				templateFunctionExpressEngine.create()(pathToTemplateFile, model, function ()
+				// Act.
+				templateFunctionExpressEngine.createEngine()(pathToTemplateFile, model, function ()
 				{
-					chai.expect(
-						getAllTemplateFixtureFiles().every(function (templateFixtureFile)
+					let hasRemovedAllTemplateFixtureFilesFromCache = getAllTemplateFixtureFiles()
+
+						.every(function (templateFixtureFile)
 						{
 							return require.cache[
 								path.normalize(templateFixtureFile)
 							] === undefined;
-						})
-					).to.be.true;
+						});
+
+					// Assert.
+					chai.expect(hasRemovedAllTemplateFixtureFilesFromCache).to.be.true;
 
 					done();
 				});
