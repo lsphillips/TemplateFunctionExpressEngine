@@ -60,5 +60,7 @@
 	"engines" :
 	{
 		"node" : ">=6.0.0"
-	}
+	},
+
+	"types" : "TemplateFunctionExpressEngine.d.ts"
 }
