@@ -47,10 +47,8 @@ function renderTemplateFunction (template, model, rendererForPartials = renderTe
 
 // --------------------------------------------------------
 
-function createEngine (options = {})
+function createEngine ({ rendererForPartials } = {})
 {
-	let rendererForPartials = options.rendererForPartials;
-
 	if (rendererForPartials !== undefined && typeof rendererForPartials !== 'function')
 	{
 		throw new Error('Partial renderer must be a function.');
