@@ -4,5 +4,5 @@
 
 module.exports = function ()
 {
-  return 'World';
+	return 'World';
 };

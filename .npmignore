@@ -5,6 +5,11 @@
 .eslintrc
 .gitignore
 
+# Build
+# -----------------
+
+tasks.sh
+
 # File Types
 # -----------------
 
@@ -19,4 +24,3 @@
 # -----------------
 
 /tests
-/tasks
