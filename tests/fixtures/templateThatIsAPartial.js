@@ -2,7 +2,7 @@
 
 // --------------------------------------------------------
 
-module.exports = function ({ name })
+module.exports = function templateThatIsAPartial ()
 {
-	return `Hello ${name}`;
+	return 'Goodbye.';
 };

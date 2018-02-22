@@ -2,7 +2,7 @@
 
 // --------------------------------------------------------
 
-module.exports = function ()
+module.exports = function template ()
 {
-	return 'World';
+	return 'Hello World.';
 };

@@ -2,7 +2,7 @@
 
 // --------------------------------------------------------
 
-module.exports = function ()
+module.exports = function templateThatThrowsAnError ()
 {
 	throw new Error('An unexpected error occurred.');
 };

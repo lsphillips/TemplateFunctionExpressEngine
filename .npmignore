@@ -1,24 +1,9 @@
 # Files
 # -----------------
 
-.DS_Store
 .eslintrc
 .gitignore
-
-# Build
-# -----------------
-
-tasks.sh
-
-# File Types
-# -----------------
-
-*.db
-*.log
-*.zip
-*.iml
-*.sublime-*
-*.log.*
+.travis.yml
 
 # Directories
 # -----------------

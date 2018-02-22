@@ -3,69 +3,46 @@
 // Dependencies
 // --------------------------------------------------------
 
-const glob = require('glob');
 const path = require('path');
 
 // --------------------------------------------------------
 
-function clearRequireCacheInDirectory (directory)
+function removeTemplateFromCache (pathToTemplateFile)
 {
-	glob.sync(
-		path.join(directory, '**/*')
-	).forEach(function (file)
+	function removeModuleFromCache (module)
 	{
-		delete require.cache[
-			path.normalize(file)
-		];
-	});
+		delete require.cache[module.id];
+
+		module.children.forEach(childModule =>
+		{
+			if (require.cache[childModule.id] && path.extname(childModule.filename) !== '.node')
+			{
+				removeModuleFromCache(childModule);
+			}
+		});
+	}
+
+	let cachedModule = require.cache[
+		require.resolve(pathToTemplateFile)
+	];
+
+	if (cachedModule)
+	{
+		removeModuleFromCache(cachedModule);
+	}
 }
 
 // --------------------------------------------------------
 
-function renderTemplateFunction (template, model, rendererForPartials = renderTemplateFunction)
+function createEngine ()
 {
-	// Ensure the template is a function, otherwise throw a
-	// complaint.
-	if (typeof template !== 'function')
-	{
-		throw new TypeError(`The provided function template is not valid. It must be a function.`);
-	}
-
-	let result;
-
-	try // to render template with model.
-	{
-		result = template(model, rendererForPartials);
-	}
-	catch (renderTemplateError)
-	{
-		throw new Error(`An error occurred whilst rendering the template function with name ${template.name}. ${renderTemplateError}`);
-	}
-
-	return result;
-}
-
-// --------------------------------------------------------
-
-function createEngine ({ rendererForPartials } = {})
-{
-	if (rendererForPartials !== undefined && typeof rendererForPartials !== 'function')
-	{
-		throw new Error('Partial renderer must be a function.');
-	}
-
 	return (pathToTemplateFile, model, callback) =>
 	{
 		function done (error, result)
 		{
-			// If caching is disabled, we need to clear the
-			// `require` cache for all the files in the Express
-			// view folder.
 			if (!model.settings['view cache'])
 			{
-				clearRequireCacheInDirectory(
-					model.settings['views']
-				);
+				removeTemplateFromCache(pathToTemplateFile);
 			}
 
 			callback(error, result);
@@ -73,14 +50,23 @@ function createEngine ({ rendererForPartials } = {})
 
 		let template;
 
-		try // to require template file.
+		try // to load the template.
 		{
 			template = require(pathToTemplateFile);
 		}
-		catch (requireTemplateError)
+		catch (loadTemplateError)
 		{
 			done(
-				new Error(`An error occurred whilst fetching the function template at "${pathToTemplateFile}". ${requireTemplateError}`)
+				new Error(`Could not load the template at ${pathToTemplateFile}. ${loadTemplateError}`)
+			);
+
+			return;
+		}
+
+		if (typeof template !== 'function')
+		{
+			done(
+				new TypeError(`Could not render the template at ${pathToTemplateFile}. It is not a function.`)
 			);
 
 			return;
@@ -88,14 +74,14 @@ function createEngine ({ rendererForPartials } = {})
 
 		let result;
 
-		try // to render template with model.
+		try // to render the template.
 		{
-			result = this.renderTemplateFunction(template, model, rendererForPartials);
+			result = template(model);
 		}
 		catch (renderTemplateError)
 		{
 			done(
-				new Error(`An error occurred whilst rendering the function template found at ${pathToTemplateFile}. ${renderTemplateError}`)
+				new Error(`An error occurred whilst rendering the template at ${pathToTemplateFile}. ${renderTemplateError}`)
 			);
 
 			return;
@@ -107,4 +93,4 @@ function createEngine ({ rendererForPartials } = {})
 
 // --------------------------------------------------------
 
-module.exports = { createEngine, renderTemplateFunction };
+module.exports = { createEngine };

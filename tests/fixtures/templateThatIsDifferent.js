@@ -2,7 +2,7 @@
 
 // --------------------------------------------------------
 
-module.exports = function ()
+module.exports = function templateThatIsDifferent ()
 {
-	return 'Hello World';
+	return 'Goodbye World.';
 };

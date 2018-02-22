@@ -1,0 +1,20 @@
+{
+    "extends" : "protect-me-from-my-stupidity",
+
+    "env" :
+    {
+        "node" : true,
+        "es6"  : true
+    },
+
+    "parserOptions" :
+    {
+        "sourceType" : "script"
+    },
+
+    "rules" :
+    {
+        "global-require"            : "off",
+        "import/no-dynamic-require" : "off"
+    }
+}
