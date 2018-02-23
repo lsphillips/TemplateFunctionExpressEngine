@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Changed
 
-- When the `view cache` setting is disabled only the template being rendered (and the partials it uses) will be removed from the cache; rather than purging the entire view directory which can be slow.
+- Only the template being rendered (and the partials it uses) will be removed from the cache; rather than purging the entire view directory, which can be slow.
 - Template functions will no longer be passed a `render` function.
 
 ### Removed
