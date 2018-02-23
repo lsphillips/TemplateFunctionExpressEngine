@@ -3,7 +3,7 @@
 
 	"version" : "2.0.0",
 
-	"description" : "An Express engine for function templates.",
+	"description" : "An Express engine for template functions.",
 
 	"author" :
 	{
