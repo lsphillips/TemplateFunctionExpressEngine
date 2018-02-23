@@ -4,5 +4,5 @@
 
 module.exports = function templateThatIsAPartial ()
 {
-	return 'Goodbye.';
+	return 'This is a partial template.';
 };

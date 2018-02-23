@@ -2,7 +2,7 @@
 
 // --------------------------------------------------------
 
-module.exports = function templateThatUsesAModel ({ name })
+module.exports = function templateThatUsesAModel ({ value })
 {
-	return `Hello ${name}.`;
+	return `This is a template that uses a model. ${value}`;
 };

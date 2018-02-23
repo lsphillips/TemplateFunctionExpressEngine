@@ -4,5 +4,5 @@
 
 module.exports = function templateThatIsDifferent ()
 {
-	return 'Goodbye World.';
+	return 'This is a different template.';
 };

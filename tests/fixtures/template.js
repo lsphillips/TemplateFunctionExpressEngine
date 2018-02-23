@@ -4,5 +4,5 @@
 
 module.exports = function template ()
 {
-	return 'Hello World.';
+	return 'This is a template.';
 };

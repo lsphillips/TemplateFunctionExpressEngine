@@ -4,5 +4,5 @@
 
 module.exports = function templateThatThrowsAnError ()
 {
-	throw new Error('An unexpected error occurred.');
+	throw new Error('This is a template that throws an error.');
 };

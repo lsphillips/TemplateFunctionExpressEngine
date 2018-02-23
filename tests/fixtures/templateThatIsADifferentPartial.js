@@ -4,5 +4,5 @@
 
 module.exports = function templateThatIsADifferentPartial ()
 {
-	return 'Hello Again.';
+	return 'This is a different partial template.';
 };

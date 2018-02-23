@@ -3,24 +3,18 @@
 // Dependencies
 // --------------------------------------------------------
 
-const path             = require('path');
 const { copy, remove } = require('fs-extra');
 const request          = require('supertest');
 
 // Support
 // --------------------------------------------------------
 
-const createTemplateEngineTestingServer = require('./support/createTemplateEngineTestingServer');
+const createViewEngineTestingServer = require('./support/createViewEngineTestingServer');
 
 // Subjects
 // --------------------------------------------------------
 
 const { createEngine } = require('../src/templateFunctionExpressEngine');
-
-// --------------------------------------------------------
-
-const pathToFixturesDirectory = path.join(__dirname, 'fixtures');
-const pathToTemplateDirectory = path.join(__dirname, 'tmp');
 
 // --------------------------------------------------------
 
@@ -32,11 +26,11 @@ describe('the Template Function Express Engine', function ()
 	{
 		// Copy all the fixtures to a temporary directory, so we
 		// can modify them.
-		await copy(pathToFixturesDirectory, pathToTemplateDirectory);
+		await copy('tests/fixtures', 'tests/views');
 
-		// Create an Express template engine testing server and
+		// Create an Express view engine testing server and then
 		// register our engine.
-		server = createTemplateEngineTestingServer(pathToTemplateDirectory)
+		server = createViewEngineTestingServer('tests/views')
 
 			.engine(
 				'js', createEngine()
@@ -47,34 +41,34 @@ describe('the Template Function Express Engine', function ()
 
 	afterEach(function ()
 	{
-		return remove(pathToTemplateDirectory);
+		return remove('tests/views');
 	});
 
-	it('shall render the template', function ()
+	it('shall render a template', function ()
 	{
 		// Act & Assert.
-		return request(server).get('/render/a/template').expect(200, 'Hello World.');
+		return request(server).get('/render/a/template').expect(200, 'This is a template.');
 	});
 
-	it('shall render the template using a provided model', function ()
+	it('shall render a template using a provided model', function ()
 	{
 		// Act & Assert.
-		return request(server).get('/render/a/template/using/a/model').expect(200, 'Hello Luke.');
+		return request(server).get('/render/a/template/using/a/model').expect(200, 'This is a template that uses a model. This is a template model value.');
 	});
 
-	it('shall produce an error when the template does not exist', function ()
+	it('shall produce an error when a template does not exist', function ()
 	{
 		// Act & Assert.
 		return request(server).get('/render/a/template/that/does/not/exist').expect(500);
 	});
 
-	it('shall produce an error when the template is not a function', function ()
+	it('shall produce an error when a template is not a function', function ()
 	{
 		// Act & Assert.
 		return request(server).get('/render/a/template/that/is/invalid').expect(500);
 	});
 
-	it('shall produce an error when the template throws an error', function ()
+	it('shall produce an error when a template throws an error', function ()
 	{
 		// Act & Assert.
 		return request(server).get('/render/a/template/that/throws/an/error').expect(500);
@@ -87,64 +81,64 @@ describe('the Template Function Express Engine', function ()
 			server.disable('view cache');
 		});
 
-		it('shall not cache the provided template', async function ()
+		it('shall not cache a template', async function ()
 		{
 			// Act & Assert.
-			await request(server).get('/render/a/template').expect(200, 'Hello World.');
+			await request(server).get('/render/a/template').expect(200, 'This is a template.');
 
 			// Setup.
-			await copy(
-				path.join(pathToFixturesDirectory, 'templateThatIsDifferent.js'),
-				path.join(pathToTemplateDirectory, 'template.js')
-			);
+			await copy('tests/fixtures/templateThatIsDifferent.js', 'tests/views/template.js');
 
 			// Act & Assert.
-			return request(server).get('/render/a/template').expect(200, 'Goodbye World.');
+			return request(server).get('/render/a/template').expect(200, 'This is a different template.');
 		});
 
-		it('shall not cache the provided template including any partials it loads', async function ()
+		it('shall not cache a template including any partials it may use', async function ()
 		{
 			// Act & Assert.
-			await request(server).get('/render/a/template/using/a/partial').expect(200, 'Hello Maria. Goodbye.');
+			await request(server).get('/render/a/template/using/a/partial').expect(200, 'This is a template that uses a template partial. This is a partial template.');
 
 			// Setup.
-			await copy(
-				path.join(pathToFixturesDirectory, 'templateThatIsADifferentPartial.js'),
-				path.join(pathToTemplateDirectory, 'templateThatIsAPartial.js')
-			);
+			await copy('tests/fixtures/templateThatIsADifferentPartial.js', 'tests/views/templateThatIsAPartial.js');
 
 			// Act & Assert.
-			return request(server).get('/render/a/template/using/a/partial').expect(200, 'Hello Maria. Hello Again.');
+			return request(server).get('/render/a/template/using/a/partial').expect(200, 'This is a template that uses a template partial. This is a different partial template.');
 		});
 
-		it('shall not cache the provided template even when the template is not a function', async function ()
+		it('shall not cache a template even when it does not exist', async function ()
+		{
+			// Act & Assert.
+			await request(server).get('/render/a/template/that/does/not/exist').expect(500);
+
+			// Setup.
+			await copy('tests/fixtures/template.js', 'tests/views/templateThatDoesNotExist.js');
+
+			// Act & Assert.
+			return request(server).get('/render/a/template/that/does/not/exist').expect(200, 'This is a template.');
+		});
+
+		it('shall not cache a template even when it is not a function', async function ()
 		{
 			// Act & Assert.
 			await request(server).get('/render/a/template/that/is/invalid').expect(500);
 
 			// Setup.
-			await copy(
-				path.join(pathToFixturesDirectory, 'template.js'),
-				path.join(pathToTemplateDirectory, 'templateThatIsInvalid.js'),
-			);
+			await copy('tests/fixtures/template.js', 'tests/views/templateThatIsInvalid.js');
 
 			// Act & Assert.
-			return request(server).get('/render/a/template/that/is/invalid').expect(200, 'Hello World.');
+			return request(server).get('/render/a/template/that/is/invalid').expect(200, 'This is a template.');
 		});
 
-		it('shall not cache the provided template even when the template throws an error', async function ()
+		it('shall not cache a template even when it throws an error', async function ()
 		{
 			// Act & Assert.
 			await request(server).get('/render/a/template/that/throws/an/error').expect(500);
 
 			// Setup.
-			await copy(
-				path.join(pathToFixturesDirectory, 'template.js'),
-				path.join(pathToTemplateDirectory, 'templateThatThrowsAnError.js'),
-			);
+			await copy('tests/fixtures/template.js', 'tests/views/templateThatThrowsAnError.js');
 
 			// Act & Assert.
-			return request(server).get('/render/a/template/that/throws/an/error').expect(200, 'Hello World.');
+			return request(server).get('/render/a/template/that/throws/an/error').expect(200, 'This is a template.');
 		});
 	});
 });
