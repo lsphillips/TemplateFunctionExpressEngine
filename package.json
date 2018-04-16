@@ -14,10 +14,8 @@
 	"keywords" :
 	[
 		"express",
-		"template",
-		"engine",
-		"function",
-		"view engine"
+		"express-engine",
+		"template-functions"
 	],
 
 	"homepage" : "https://github.com/lsphillips/TemplateFunctionExpressEngine",
