@@ -1,22 +1,13 @@
 'use strict';
 
-// Dependencies
-// --------------------------------------------------------
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const { copy, remove } = require('fs-extra');
-const request          = require('supertest');
-
-// Support
-// --------------------------------------------------------
-
+const { copy, remove }              = require('fs-extra');
+const request                       = require('supertest');
 const createViewEngineTestingServer = require('./support/createViewEngineTestingServer');
+const { createEngine }              = require('../src/templateFunctionExpressEngine');
 
-// Subjects
-// --------------------------------------------------------
-
-const { createEngine } = require('../src/templateFunctionExpressEngine');
-
-// --------------------------------------------------------
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 describe('the Template Function Express Engine', function ()
 {
@@ -39,39 +30,39 @@ describe('the Template Function Express Engine', function ()
 			.set('view engine', 'js');
 	});
 
-	afterEach(function ()
+	afterEach(async function ()
 	{
-		return remove('tests/views');
+		await remove('tests/views');
 	});
 
-	it('shall render a template', function ()
+	it('shall render a template', async function ()
 	{
 		// Act & Assert.
-		return request(server).get('/render/a/template').expect(200, 'This is a template.');
+		await request(server).get('/render/a/template').expect(200, 'This is a template.');
 	});
 
-	it('shall render a template using a provided model', function ()
+	it('shall render a template using a provided model', async function ()
 	{
 		// Act & Assert.
-		return request(server).get('/render/a/template/using/a/model').expect(200, 'This is a template that uses a model. This is a template model value.');
+		await request(server).get('/render/a/template/using/a/model').expect(200, 'This is a template that uses a model. This is a template model value.');
 	});
 
-	it('shall produce an error when a template does not exist', function ()
+	it('shall produce an error when a template does not exist', async function ()
 	{
 		// Act & Assert.
-		return request(server).get('/render/a/template/that/does/not/exist').expect(500);
+		await request(server).get('/render/a/template/that/does/not/exist').expect(500);
 	});
 
-	it('shall produce an error when a template is not a function', function ()
+	it('shall produce an error when a template is not a function', async function ()
 	{
 		// Act & Assert.
-		return request(server).get('/render/a/template/that/is/invalid').expect(500);
+		await request(server).get('/render/a/template/that/is/invalid').expect(500);
 	});
 
-	it('shall produce an error when a template throws an error', function ()
+	it('shall produce an error when a template throws an error', async function ()
 	{
 		// Act & Assert.
-		return request(server).get('/render/a/template/that/throws/an/error').expect(500);
+		await request(server).get('/render/a/template/that/throws/an/error').expect(500);
 	});
 
 	describe('when the `view cache` setting is disabled', function ()
@@ -90,7 +81,7 @@ describe('the Template Function Express Engine', function ()
 			await copy('tests/fixtures/templateThatIsDifferent.js', 'tests/views/template.js');
 
 			// Act & Assert.
-			return request(server).get('/render/a/template').expect(200, 'This is a different template.');
+			await request(server).get('/render/a/template').expect(200, 'This is a different template.');
 		});
 
 		it('shall not cache a template including any partials it may use', async function ()
@@ -102,7 +93,7 @@ describe('the Template Function Express Engine', function ()
 			await copy('tests/fixtures/templateThatIsADifferentPartial.js', 'tests/views/templateThatIsAPartial.js');
 
 			// Act & Assert.
-			return request(server).get('/render/a/template/using/a/partial').expect(200, 'This is a template that uses a template partial. This is a different partial template.');
+			await request(server).get('/render/a/template/using/a/partial').expect(200, 'This is a template that uses a template partial. This is a different partial template.');
 		});
 
 		it('shall not cache a template even when it does not exist', async function ()
@@ -114,7 +105,7 @@ describe('the Template Function Express Engine', function ()
 			await copy('tests/fixtures/template.js', 'tests/views/templateThatDoesNotExist.js');
 
 			// Act & Assert.
-			return request(server).get('/render/a/template/that/does/not/exist').expect(200, 'This is a template.');
+			await request(server).get('/render/a/template/that/does/not/exist').expect(200, 'This is a template.');
 		});
 
 		it('shall not cache a template even when it is not a function', async function ()
@@ -126,7 +117,7 @@ describe('the Template Function Express Engine', function ()
 			await copy('tests/fixtures/template.js', 'tests/views/templateThatIsInvalid.js');
 
 			// Act & Assert.
-			return request(server).get('/render/a/template/that/is/invalid').expect(200, 'This is a template.');
+			await request(server).get('/render/a/template/that/is/invalid').expect(200, 'This is a template.');
 		});
 
 		it('shall not cache a template even when it throws an error', async function ()
@@ -138,7 +129,7 @@ describe('the Template Function Express Engine', function ()
 			await copy('tests/fixtures/template.js', 'tests/views/templateThatThrowsAnError.js');
 
 			// Act & Assert.
-			return request(server).get('/render/a/template/that/throws/an/error').expect(200, 'This is a template.');
+			await request(server).get('/render/a/template/that/throws/an/error').expect(200, 'This is a template.');
 		});
 	});
 });

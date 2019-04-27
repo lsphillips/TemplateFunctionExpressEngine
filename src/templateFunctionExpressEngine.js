@@ -1,11 +1,10 @@
 'use strict';
 
-// Dependencies
-// --------------------------------------------------------
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const path = require('path');
 
-// --------------------------------------------------------
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function removeTemplateFromCache (pathToTemplateFile)
 {
@@ -32,7 +31,7 @@ function removeTemplateFromCache (pathToTemplateFile)
 	}
 }
 
-// --------------------------------------------------------
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 function createEngine ()
 {
@@ -91,6 +90,6 @@ function createEngine ()
 	};
 }
 
-// --------------------------------------------------------
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 module.exports = { createEngine };

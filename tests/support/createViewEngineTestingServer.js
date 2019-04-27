@@ -1,11 +1,10 @@
 'use strict';
 
-// Dependencies
-// --------------------------------------------------------
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 const express = require('express');
 
-// --------------------------------------------------------
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 module.exports = function createViewEngineTestingServer (pathToViewDirectory)
 {
