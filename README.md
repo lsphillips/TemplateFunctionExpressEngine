@@ -1,7 +1,7 @@
 # Template Function Express Engine
 
 [![Available from NPM](https://img.shields.io/npm/v/template-function-express-engine.svg?maxAge=900)](https://www.npmjs.com/package/template-function-express-engine)
-[![Built using Travis](https://img.shields.io/travis/lsphillips/TemplateFunctionExpressEngine/master.svg?maxAge=900)](https://travis-ci.org/lsphillips/TemplateFunctionExpressEngine)
+[![Built using Travis](https://img.shields.io/travis/com/lsphillips/TemplateFunctionExpressEngine/master.svg?maxAge=900)](https://travis-ci.com/lsphillips/TemplateFunctionExpressEngine)
 
 An Express engine for template functions.
 
