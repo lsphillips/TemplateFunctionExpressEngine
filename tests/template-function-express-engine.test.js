@@ -4,8 +4,8 @@
 
 const { copy, remove }              = require('fs-extra');
 const request                       = require('supertest');
-const createViewEngineTestingServer = require('./support/createViewEngineTestingServer');
-const { createEngine }              = require('../src/templateFunctionExpressEngine');
+const createViewEngineTestingServer = require('./support/create-view-engine-testing-server');
+const { createEngine }              = require('../src/template-function-express-engine');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -78,7 +78,7 @@ describe('the Template Function Express Engine', function ()
 			await request(server).get('/render/a/template').expect(200, 'This is a template.');
 
 			// Setup.
-			await copy('tests/fixtures/templateThatIsDifferent.js', 'tests/views/template.js');
+			await copy('tests/fixtures/template-that-is-different.js', 'tests/views/template.js');
 
 			// Act & Assert.
 			await request(server).get('/render/a/template').expect(200, 'This is a different template.');
@@ -90,7 +90,7 @@ describe('the Template Function Express Engine', function ()
 			await request(server).get('/render/a/template/using/a/partial').expect(200, 'This is a template that uses a template partial. This is a partial template.');
 
 			// Setup.
-			await copy('tests/fixtures/templateThatIsADifferentPartial.js', 'tests/views/templateThatIsAPartial.js');
+			await copy('tests/fixtures/template-that-is-a-different-partial.js', 'tests/views/template-that-is-a-partial.js');
 
 			// Act & Assert.
 			await request(server).get('/render/a/template/using/a/partial').expect(200, 'This is a template that uses a template partial. This is a different partial template.');
@@ -102,7 +102,7 @@ describe('the Template Function Express Engine', function ()
 			await request(server).get('/render/a/template/that/does/not/exist').expect(500);
 
 			// Setup.
-			await copy('tests/fixtures/template.js', 'tests/views/templateThatDoesNotExist.js');
+			await copy('tests/fixtures/template.js', 'tests/views/template-that-does-not-exist.js');
 
 			// Act & Assert.
 			await request(server).get('/render/a/template/that/does/not/exist').expect(200, 'This is a template.');
@@ -114,7 +114,7 @@ describe('the Template Function Express Engine', function ()
 			await request(server).get('/render/a/template/that/is/invalid').expect(500);
 
 			// Setup.
-			await copy('tests/fixtures/template.js', 'tests/views/templateThatIsInvalid.js');
+			await copy('tests/fixtures/template.js', 'tests/views/template-that-is-invalid.js');
 
 			// Act & Assert.
 			await request(server).get('/render/a/template/that/is/invalid').expect(200, 'This is a template.');
@@ -126,7 +126,7 @@ describe('the Template Function Express Engine', function ()
 			await request(server).get('/render/a/template/that/throws/an/error').expect(500);
 
 			// Setup.
-			await copy('tests/fixtures/template.js', 'tests/views/templateThatThrowsAnError.js');
+			await copy('tests/fixtures/template.js', 'tests/views/template-that-throws-an-error.js');
 
 			// Act & Assert.
 			await request(server).get('/render/a/template/that/throws/an/error').expect(200, 'This is a template.');

@@ -17,29 +17,29 @@ module.exports = function createViewEngineTestingServer (pathToViewDirectory)
 
 		.get('/render/a/template/using/a/model', function (request, response)
 		{
-			response.render('templateThatUsesAModel', {
+			response.render('template-that-uses-a-model', {
 				value : 'This is a template model value.'
 			});
 		})
 
 		.get('/render/a/template/using/a/partial', function (request, response)
 		{
-			response.render('templateThatUsesAPartial');
+			response.render('template-that-uses-a-partial');
 		})
 
 		.get('/render/a/template/that/does/not/exist', function (request, response)
 		{
-			response.render('templateThatDoesNotExist');
+			response.render('template-that-does-not-exist');
 		})
 
 		.get('/render/a/template/that/is/invalid', function (request, response)
 		{
-			response.render('templateThatIsInvalid');
+			response.render('template-that-is-invalid');
 		})
 
 		.get('/render/a/template/that/throws/an/error', function (request, response)
 		{
-			response.render('templateThatThrowsAnError');
+			response.render('template-that-throws-an-error');
 		})
 
 		// Miss.

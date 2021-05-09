@@ -2,7 +2,7 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const templateThatIsAPartial = require('./templateThatIsAPartial');
+const templateThatIsAPartial = require('./template-that-is-a-partial');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

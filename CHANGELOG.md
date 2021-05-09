@@ -2,6 +2,12 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] (2021-05-09)
+
+### Changed
+
+- Support for Node.js version `10.x.x` has been dropped.
+
 ## [2.0.0] (2018-02-23)
 
 ### Changed

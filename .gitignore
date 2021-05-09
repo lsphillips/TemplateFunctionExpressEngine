@@ -2,3 +2,8 @@
 # -----------------
 
 /node_modules
+
+# Test Files
+# -----------------
+
+/tests/views
