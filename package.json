@@ -31,7 +31,8 @@
         "eslint" : "7.26.0",
         "eslint-plugin-import" : "2.22.1",
         "eslint-plugin-promise" : "5.1.0",
-        "eslint-config-protect-me-from-my-stupidity" : "7.0.0",
+        "eslint-plugin-node" : "11.1.0",
+        "eslint-config-protect-me-from-my-stupidity" : "7.1.2",
         "fs-extra" : "10.0.0",
         "express" : "4.17.1",
         "supertest" : "6.1.3"

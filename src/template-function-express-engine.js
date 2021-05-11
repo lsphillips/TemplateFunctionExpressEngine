@@ -51,7 +51,7 @@ function createEngine ()
 
 		try // to load the template.
 		{
-			template = require(pathToTemplateFile); // eslint-disable-line global-require, import/no-dynamic-require
+			template = require(pathToTemplateFile); // eslint-disable-line node/global-require, import/no-dynamic-require
 		}
 		catch (loadTemplateError)
 		{

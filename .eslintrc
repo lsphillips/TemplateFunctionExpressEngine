@@ -1,5 +1,9 @@
 {
-	"extends" : "protect-me-from-my-stupidity",
+	"extends" :
+	[
+		"protect-me-from-my-stupidity",
+		"protect-me-from-my-stupidity/and/from-writing-stupid-node-applications"
+	],
 
 	"env" :
 	{
