@@ -56,7 +56,7 @@ This project is available through the Node Package Manager (NPM), so you can ins
 npm install template-function-express-engine
 ```
 
-**Please Note:** Versions of Node lower than **v7.0.0** are not supported.
+**Please Note:** Versions of Node lower than **v12.0.0** are not supported.
 
 ## Development
 
