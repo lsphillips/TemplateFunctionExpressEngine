@@ -2,19 +2,19 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.1.1] (2021-05-16)
+## 2.1.1 - 2021-05-16
 
 ### Changed
 
 - Removed unnecessary files from the package making it more lightweight.
 
-## [2.1.0] (2021-05-09)
+## 2.1.0 - 2021-05-09
 
 ### Changed
 
 - Support for Node.js version `10.x.x` has been dropped.
 
-## [2.0.0] (2018-02-23)
+## 2.0.0 - 2018-02-23
 
 ### Changed
 
@@ -25,6 +25,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - Removed the `rendererForPartials` engine option.
 
-## [1.0.0] (2017-05-16)
+## 1.0.0 - 2017-05-16
 
 The initial public release.
