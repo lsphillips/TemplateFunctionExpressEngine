@@ -1,7 +1,7 @@
 # Template Function Express Engine
 
 [![Available from NPM](https://img.shields.io/npm/v/template-function-express-engine.svg?maxAge=900)](https://www.npmjs.com/package/template-function-express-engine)
-[![Built using GitHub Action](https://github.com/lsphillips/TemplateFunctionExpressEngine/actions/workflows/build-and-test.yml/badge.svg?branch=master)](https://github.com/lsphillips/TemplateFunctionExpressEngine/actions)
+[![Built using GitHub Action](https://github.com/lsphillips/TemplateFunctionExpressEngine/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/lsphillips/TemplateFunctionExpressEngine/actions)
 
 An Express engine for template functions.
 
