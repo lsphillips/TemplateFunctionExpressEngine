@@ -1,3 +1,9 @@
+# DEPRECATED
+
+This project is now deprecated and will no longer be maintained.
+
+---
+
 # Template Function Express Engine
 
 [![Available from NPM](https://img.shields.io/npm/v/template-function-express-engine.svg?maxAge=900)](https://www.npmjs.com/package/template-function-express-engine)
